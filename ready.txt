@@ -1,0 +1,172 @@
+npm create vite@latest my-portfolio -- --template react-ts
+
+cd my-portfolio
+
+npm install
+
+npm run dev
+
+Шаг 2. Установка Redux Toolkit и React Redux
+В терминале выполни:
+
+npm install -D sass
+
+npm install vite-plugin-svgr --save-dev
+
+npm install eslint prettier eslint-config-prettier eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-import @typescript-eslint/eslint-plugin @typescript-eslint/parser -D
+
+npx eslint --init
+
+npm install --save-dev gh-pages
+
+npm install @reduxjs/toolkit react-redux
+
+Шаг 3. Добавление типизированных хуков (не обязательно, но удобно)
+Создай файл /src/app/hooks.ts и добавь:
+
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import type { RootState, AppDispatch } from './store';
+
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+Следующий шаг
+Когда проект и зависимости установлены, можем приступить к проектированию архитектуры и писать первые слайсы Redux.
+
+Если хочешь, могу сразу помочь с шаблоном store.ts и примером редьюсера.
+
+npm install react-router-dom
+npm install -D @testing-library/react @testing-library/jest-dom @testing-library/user-event vitest jsdom
+
+
+Шаг 5. Настройка Vitest
+Добавь в корень проекта файл vitest.config.ts со следующим содержимым:
+
+ts
+Копировать
+Редактировать
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/setupTests.ts',
+  },
+});
+Шаг 6. Создание setupTests.ts для тестов
+Создай файл /src/setupTests.ts с содержимым:
+
+ts
+Копировать
+Редактировать
+import '@testing-library/jest-dom';
+Шаг 7. Пример простого теста компонента
+Создай /src/components/Hello.test.tsx:
+
+tsx
+Копировать
+Редактировать
+import { render, screen } from '@testing-library/react';
+import React from 'react';
+
+function Hello() {
+  return <h1>Hello, world!</h1>;
+}
+
+test('renders hello message', () => {
+  render(<Hello />);
+  expect(screen.getByText('Hello, world!')).toBeInTheDocument();
+});
+Запусти тесты командой:
+
+bash
+Копировать
+Редактировать
+npm run test
+Шаг 8. Пример базовой настройки React Router
+В src/main.tsx:
+
+tsx
+Копировать
+Редактировать
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import App from './App';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/*" element={<App />} />
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>
+);
+
+
+// eslint.config.js
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import pluginReact from 'eslint-plugin-react';
+import prettier from 'eslint-plugin-prettier';
+import reactHooks from 'eslint-plugin-react-hooks';
+import importPlugin from 'eslint-plugin-import';
+
+export default [
+  {
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    ignores: ['dist/**', 'node_modules/**'],
+    languageOptions: {
+      globals: globals.browser,
+    },
+    plugins: {
+      js,
+      react: pluginReact,
+      prettier,
+      'react-hooks': reactHooks,
+      import: importPlugin,
+    },
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      pluginReact.configs.flat.recommended,
+      'plugin:react-hooks/recommended',
+      'plugin:import/recommended',
+      'plugin:import/typescript',
+    ],
+    rules: {
+      'prettier/prettier': ['error'],
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'import/no-unresolved': 'error',
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+      'import/resolver': {
+        typescript: true,
+        node: true,
+      },
+    },
+  },
+];
+
+
+.prettierrc
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "semi": true,
+  "tabWidth": 2,
+  "printWidth": 80,
+  "endOfLine": "auto"
+}
+
+"scripts": {
+  "lint": "eslint 'src/**/*.{ts,tsx}'",
+  "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
+  "format": "prettier --write 'src/**/*.{ts,tsx,scss,css,md}'"
+}
